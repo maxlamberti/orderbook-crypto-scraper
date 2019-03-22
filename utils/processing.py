@@ -1,10 +1,22 @@
 import time
+import pickle
 import logging.config
 from decimal import Decimal
 from requests import HTTPError
 
 
 logger = logging.getLogger(__name__)
+
+
+def pickle_data(path, data):
+	with open(path, 'wb') as f:
+		pickle.dump(data, f)
+
+
+def unpickle_data(path):
+	with open(path, 'rb') as f:
+		data = pickle.load(f)
+	return data
 
 
 def query_order_book(api, pair, count):
