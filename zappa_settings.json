@@ -1,0 +1,25 @@
+{
+    "ob_scrape_event": {
+        "aws_region": "us-east-1",
+        "profile_name": "default",
+        "project_name": "orderbook-scraper",
+        "runtime": "python3.6",
+        "s3_bucket": "orderbook-scraper",
+        "debug": false,
+        "log_level": "INFO",
+        "apigateway_enabled": false,
+        "keep_warm": false,
+        "timeout_seconds": 900,
+        "memory_size": 128,
+        "events": [{
+          "function": "scraper.scraper",
+          "expression": "rate(1 minute)"
+        }],
+        "lambda_handler": "scraper.scraper",
+        "aws_environment_variables": {
+            "ENVIRONMENT": "PRODUCTION",
+            "DB_REGION": "us-east-1",
+            "TABLE": "kraken-orderbook"
+    }
+    }
+}
