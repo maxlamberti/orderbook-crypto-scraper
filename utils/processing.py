@@ -61,7 +61,7 @@ def reformat_orderbook(obook, pair):
 		for order in obook['asks']:
 			asks.append([Decimal(order[0]), Decimal(order[1]), order[2]])
 		for order in obook['bids']:
-			asks.append([Decimal(order[0]), Decimal(order[1]), order[2]])
+			bids.append([Decimal(order[0]), Decimal(order[1]), order[2]])
 		item = {
 			'pair': pair,
 			'timestamp': int(time.time()),
