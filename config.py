@@ -1,5 +1,8 @@
 
 
+PAIRS = ["XXRPZEUR"]
+DEPTHS = [200]
+
 LOGGING = {
 	'disable_existing_loggers': False,
 	'version': 1,

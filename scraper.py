@@ -1,18 +1,24 @@
+import os
 import time
 import krakenex
 import logging.config
 
 from utils.database import OrderBookTable
 from utils.processing import query_order_book, reformat_orderbook
-from config import PAIRS, AWS_REGION, NUM_ORDERS, TABLE, LOGGING
+from config import LOGGING, PAIRS, DEPTHS
 
 
 logging.config.dictConfig(LOGGING)
 logger = logging.getLogger('scraper')
 
 
+env = os.environ.get('ENVIRONMENT')
+awsregion = os.environ.get('DB_REGION')
+table = os.environ.get('TABLE')
+
+
 kraken = krakenex.API()
-db = OrderBookTable(AWS_REGION, TABLE)
+db = OrderBookTable(awsregion, table)
 
 
 def scraper(event=None, context=None):
@@ -31,7 +37,7 @@ def scraper(event=None, context=None):
 
 	for idx, pair in enumerate(PAIRS):
 
-		ob = query_order_book(kraken, pair, NUM_ORDERS[idx])
+		ob = query_order_book(kraken, pair, DEPTHS[idx])
 		item = reformat_orderbook(ob, pair)
 		if item:
 			db.write(item)
