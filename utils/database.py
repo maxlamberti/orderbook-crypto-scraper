@@ -1,5 +1,6 @@
 import boto3
 import logging
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 
 
@@ -49,7 +50,31 @@ class DynamoConnector:
 
 class OrderBookTable(DynamoConnector):
 
-	def write(self, obook):
+	def write(self, ob):
 		logger.info("Writing orderbook for pair=%s, timestamp=%s to dynamodb.",
-					obook.get('pair'), obook.get('timestamp'))
-		self.put_item(obook)
+					ob.get('pair'), ob.get('timestamp'))
+		self.put_item(ob)
+
+	def get_orderbook(self, pair, tinitial=None, tfinal=None):
+		"""Performs a scan operation on the database to return scraped order books.
+
+		Parameters
+		----------
+		pair : str
+			Currency pair for which to get order book data.
+		ti : int
+			Initial timestamp for range based query. (optional)
+		tf : int
+			Final timestamp for range based query. (optional)
+
+		Returns
+		-------
+		list
+			List of dicts of order book data.
+
+		"""
+
+		fe = Key('timestamp').between(tinitial, tfinal) & Key('pair').eq(pair)
+		scan = self.table.scan(FilterExpression=fe)
+
+		return scan.get('Items', [])
