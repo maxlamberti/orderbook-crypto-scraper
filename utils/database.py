@@ -49,14 +49,7 @@ class DynamoConnector:
 
 class OrderBookTable(DynamoConnector):
 
-	def get_strategy(self, strategy_id):
-		search_key = {'strategy_id': strategy_id}
-		item = self.get_item(search_key)
-		return item
-
-	def add_order_id(self, strategy_id, txid):
-		logger.info("Adding %s to %s strategy config.", txid, strategy_id)
-		search_key = {'strategy_id': strategy_id}
-		update_expression = "SET orders = list_append(orders, :id)"
-		attribute_values = {':id': [txid]}
-		self.update_item(search_key, update_expression, attribute_values)
+	def write(self, obook):
+		logger.info("Writing orderbook for pair=%s, timestamp=%s to dynamodb.",
+					obook.get('pair'), obook.get('timestamp'))
+		self.put_item(obook)
