@@ -55,7 +55,7 @@ class OrderBookTable(DynamoConnector):
 					ob.get('pair'), ob.get('timestamp'))
 		self.put_item(ob)
 
-	def get_orderbook(self, pair, tinitial=None, tfinal=None):
+	def get_orderbook(self, pair, ti=None, tf=None):
 		"""Performs a scan operation on the database to return scraped order books.
 
 		Parameters
@@ -74,7 +74,7 @@ class OrderBookTable(DynamoConnector):
 
 		"""
 
-		fe = Key('timestamp').between(tinitial, tfinal) & Key('pair').eq(pair)
+		fe = Key('timestamp').between(ti, tf) & Key('pair').eq(pair)
 		scan = self.table.scan(FilterExpression=fe)
 
 		return scan.get('Items', [])
