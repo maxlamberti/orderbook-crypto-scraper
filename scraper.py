@@ -3,7 +3,7 @@ import time
 import krakenex
 import logging.config
 
-from utils.database import OrderBookTable
+from utils.dynamodb import OrderBookTable
 from utils.processing import query_order_book, reformat_orderbook
 from config import LOGGING, PAIRS, DEPTHS
 
