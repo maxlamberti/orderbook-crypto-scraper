@@ -34,12 +34,7 @@
         "keep_warm": false,
         "timeout_seconds": 900,
         "memory_size": 128,
-        "lambda_handler": "scraper.scraper",
-        "aws_environment_variables": {
-            "MONGO_IP": "18.234.157.240",
-            "DB_USER": "readwriteuser",
-            "DB_PASSWORD": "8E3dKCoi1ifWI1"
-    }
+        "lambda_handler": "scraper.scraper"
     },
     "ob_mongo_iterator": {
         "aws_region": "us-east-1",

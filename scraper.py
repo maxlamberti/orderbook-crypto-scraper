@@ -1,10 +1,10 @@
-import os
 import time
 import krakenex
 import logging.config
 
 from pymongo import MongoClient
 from utils.processing import query_order_book, mongo_reformat_orderbook
+from credentials import MONGO_CREDS
 from config import LOGGING, PAIRS, DEPTHS
 
 
@@ -12,9 +12,9 @@ logging.config.dictConfig(LOGGING)
 logger = logging.getLogger('scraper')
 
 
-MONGO_IP =  os.environ.get('MONGO_IP')
-DB_USER = os.environ.get('DB_USER')
-DB_PASSWORD = os.environ.get('DB_PASSWORD')
+MONGO_IP = MONGO_CREDS['HOST']
+DB_USER = MONGO_CREDS['USER']
+DB_PASSWORD = MONGO_CREDS['PASSWORD']
 
 
 kraken = krakenex.API()
