@@ -1,5 +1,6 @@
 # Custom
-.p
+dynamo_connect_example.py
+*.p
 .idea/
 .DS_STORE
 
