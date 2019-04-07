@@ -1,7 +1,7 @@
 
 
-PAIRS = ["XXRPZEUR"]
-DEPTHS = [200]
+PAIRS = ['XXRPZUSD', 'XXBTZEUR', 'XXMRZUSD', 'XLTCZUSD', 'XETHZUSD', 'USDTZUSD']
+DEPTHS = [25, 25, 25, 25, 25, 25]
 
 LOGGING = {
 	'disable_existing_loggers': False,
@@ -22,6 +22,10 @@ LOGGING = {
 		'scraper': {
 			'handlers': ['console'],
 			'level': 'INFO',
+		},
+		'iterator': {
+			'handlers': ['console'],
+			'level': 'WARNING',
 		}
 	},
 }

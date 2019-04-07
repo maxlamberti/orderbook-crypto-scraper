@@ -82,3 +82,33 @@ def reformat_orderbook(obook, pair):
 		}
 
 	return item
+
+
+def mongo_reformat_orderbook(obook, pair):
+	"""Process the orderbook response for write to MongoDB.
+
+	Parameters
+	----------
+	obook : dict
+		The kraken response returned by query_order_book(...).
+	pair : str
+		The currency pair denomination of the orderbook.
+
+	Returns
+	-------
+	dict
+		The orderbook in format for DynamoDB insertion. Returns empty dict on error.
+	"""
+
+	if not obook:
+		item = {}
+		logger.error("Orderbook for pair=%s is empty. Can't reformat for DB insertion.", pair)
+	else:
+		item = {
+			'pair': pair,
+			'timestamp': time.time(),
+			'asks': obook['asks'],
+			'bids': obook['bids']
+		}
+
+	return item

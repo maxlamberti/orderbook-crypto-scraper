@@ -1,10 +1,10 @@
-import os
 import time
 import krakenex
 import logging.config
 
-from utils.database import OrderBookTable
-from utils.processing import query_order_book, reformat_orderbook
+from pymongo import MongoClient
+from utils.processing import query_order_book, mongo_reformat_orderbook
+from credentials import MONGO_CREDS
 from config import LOGGING, PAIRS, DEPTHS
 
 
@@ -12,13 +12,14 @@ logging.config.dictConfig(LOGGING)
 logger = logging.getLogger('scraper')
 
 
-env = os.environ.get('ENVIRONMENT')
-awsregion = os.environ.get('DB_REGION')
-table = os.environ.get('TABLE')
+MONGO_IP = MONGO_CREDS['HOST']
+DB_USER = MONGO_CREDS['USER']
+DB_PASSWORD = MONGO_CREDS['PASSWORD']
 
 
 kraken = krakenex.API()
-db = OrderBookTable(awsregion, table)
+client = MongoClient(MONGO_IP, username=DB_USER, password=DB_PASSWORD)
+db = client.get_database('orderbooks')
 
 
 def scraper(event=None, context=None):
@@ -33,13 +34,16 @@ def scraper(event=None, context=None):
 
 	"""
 
-	starttime = time.time()
+	start_time = time.time()
 
 	for idx, pair in enumerate(PAIRS):
 
 		ob = query_order_book(kraken, pair, DEPTHS[idx])
-		item = reformat_orderbook(ob, pair)
+		item = mongo_reformat_orderbook(ob, pair)
 		if item:
-			db.write(item)
+			result = db[pair].insert_one(item)
+			logger.info("Insert status: {}".format(result))
 
-	logger.info("Finished executing handler, took %0.1f seconds.", time.time() - starttime)
+		time.sleep(1)
+
+	logger.info("Finished executing handler, took %0.1f seconds.", time.time() - start_time)

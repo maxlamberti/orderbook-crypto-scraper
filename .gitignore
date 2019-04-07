@@ -1,4 +1,5 @@
 # Custom
+credentials.py
 dynamo_connect_example.py
 *.p
 .idea/
