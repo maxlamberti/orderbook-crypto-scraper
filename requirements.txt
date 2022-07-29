@@ -31,7 +31,7 @@ krakenex==2.1.0
 lambda-packages==0.20.0
 MarkupSafe==1.1.1
 matplotlib==3.0.3
-mistune==0.8.4
+mistune==2.0.3
 nbconvert==5.3.1
 nbformat==4.4.0
 notebook==5.7.4
